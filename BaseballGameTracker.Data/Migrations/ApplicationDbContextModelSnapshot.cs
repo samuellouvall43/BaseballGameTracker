@@ -36,7 +36,7 @@ namespace BaseballGameTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Email");
+                    b.ToTable("Email", (string)null);
                 });
 
             modelBuilder.Entity("BaseballGameTracker.Data.Game", b =>
@@ -59,7 +59,7 @@ namespace BaseballGameTracker.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Game");
+                    b.ToTable("Game", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

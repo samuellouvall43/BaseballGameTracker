@@ -4,7 +4,8 @@ using BaseballGameTracker.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BaseballGameTracker.MappingProfiles;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
+builder.Host.UseSerilog((ctx, config) => 
+    config.WriteTo.Console()
+    .ReadFrom.Configuration(ctx.Configuration)
+  );
 
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -30,11 +34,6 @@ builder.Services.AddScoped<IRecordService, RecordService>();
 builder.Services.AddScoped<IEmailSenderService,EmailSenderService>();
 
 
-
-//services.AddSingleton(provider => new MapperConfiguration(cfg =>
-//{
-//    cfg.AddProfile(new UserProfile(provider.GetService<IUserManager>()));
-//}).CreateMapper());
 
 builder.Services.AddAutoMapper(cfg =>
 {

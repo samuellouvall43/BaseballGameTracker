@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BaseballGameTracker.Data;
 using BaseballGameTracker.Services;
 using BaseballGameTracker.Models.Games;
 

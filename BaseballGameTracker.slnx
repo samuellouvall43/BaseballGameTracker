@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="BaseballGameTracker.Application/BaseballGameTracker.Application.csproj" Id="5c98ba8e-b3cc-422e-9f91-e4427604646b" />
+  <Project Path="BaseballGameTracker.Data/BaseballGameTracker.Data.csproj" Id="e4567efb-4722-4e1c-ae0d-c8cf60758fc8" />
   <Project Path="BaseballGameTracker/BaseballGameTracker.csproj" />
 </Solution>

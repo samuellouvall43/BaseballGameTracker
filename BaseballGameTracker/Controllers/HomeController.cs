@@ -21,14 +21,9 @@ namespace BaseballGameTracker.Controllers
                 Wins =  wins, 
                 Loses = loses
             };
-            Console.WriteLine("========================"); 
-            Console.WriteLine(User.IsInRole("ADMINISTRATOR"));
+  
 
-            
-
-
-
-
+          
        
             return View(model);
         }

@@ -56,8 +56,7 @@ namespace BaseballGameTracker.Controllers
           
             int emailId = GetEmailId(email.EmailAddress);
 
-            Console.WriteLine("EMAIL ID TO BE DELETED: " + emailId);
-
+        
             await DeleteConfirmed(emailId);
 
             return RedirectToAction("Index", "Home");
@@ -96,8 +95,7 @@ namespace BaseballGameTracker.Controllers
         public async Task<IActionResult> Create([Bind("Id,EmailAddress")] Email email)
         {
             int emailId = GetEmailId(email.EmailAddress);
-            Console.WriteLine("EMAIL ID " + emailId); 
-
+           
             if(emailId != 0)
             {
                 ModelState.AddModelError("EmailAddress", "Email is already entered");
@@ -110,7 +108,9 @@ namespace BaseballGameTracker.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(email);
+
+            return RedirectToAction("Index", "Home");
+
         }
 
         // GET: Emails/Edit/5
