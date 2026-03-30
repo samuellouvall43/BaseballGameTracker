@@ -106,9 +106,10 @@ namespace BaseballGameTracker.Controllers
             {
                 _context.Add(email);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
 
+      
             return RedirectToAction("Index", "Home");
 
         }

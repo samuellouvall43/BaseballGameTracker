@@ -13,6 +13,8 @@ namespace BaseballGameTracker.Controllers
         public IActionResult Index()
         {
 
+            Console.WriteLine("======= HELLLOOOOOOO ==========="); 
+
             var wins = _recordService.CalulateWins();
             var loses = _recordService.CalculateLoses(); 
 
