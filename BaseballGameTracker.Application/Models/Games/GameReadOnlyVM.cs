@@ -5,7 +5,7 @@ namespace BaseballGameTracker.Models.Games
     public class GameReadOnlyVM : BaseGameVM
     {
 
-        [Display(Name = "Cardials Score")]
+        [Display(Name = "Cardinals Score")]
         public int CardinalsScore { get; set; }
 
 
