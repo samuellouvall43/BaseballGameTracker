@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Utilities;
+using Quartz;
+using System.ComponentModel;
 
 
 namespace BaseballGameTracker.Services
@@ -27,7 +29,13 @@ namespace BaseballGameTracker.Services
         public async Task<CompositeVM> GetTodaysGame(int wins, int loses)
         {
             HttpClient client = new HttpClient();
-           
+
+
+                // TO DO : 
+                // Create create CompositeVM method. 
+                // clean up code. 
+                // Catch logic 
+                // 
 
             try
             {
@@ -37,8 +45,8 @@ namespace BaseballGameTracker.Services
 
                 var todayString = DateTime.Now.ToString("yyyy-MM-dd");
               
-
                 var api = "https://api.sportsblaze.com/mlb/v1/boxscores/daily/" + todayString + ".json?key=sb1m6fs3e2xfx8sctso07cm&team=St.%20Louis%20Cardinals";
+               
                 //var api = "https://api.sportsblaze.com/mlb/v1/boxscores/daily/2026-04-02.json?key=sb1m6fs3e2xfx8sctso07cm&team=St.%20Louis%20Cardinals";
 
                 string data = await client.GetStringAsync(api);
@@ -48,33 +56,51 @@ namespace BaseballGameTracker.Services
 
                 var IsGameToday = false;
 
-                if (json.games.Count != 0)
-                {
-                    IsGameToday = true;
+                var statusOfGame = json.games[0].status; 
+                var game = json.games[0];
+                
+
+                var cardsScore = 0;
+                var oppScore = 0;
+                var opponent = "";
+                var location = ""; 
 
 
-                    var cardsScore = 0;
-                    var oppScore = 0;
-                    var opponent = "";
-
-                    var game = json.games[0];
-
-                    if (game.teams.home.name == "St. Louis Cardinals")
-                    {
-
-
+                //Get home or away and set runs. 
+                if (game.teams.home.name == "St. Louis Cardinals" && statusOfGame != "Scheduled"){
+                   
                         cardsScore = game.scores.total.home.runs;
                         oppScore = game.scores.total.away.runs;
-                        opponent = game.teams.away.name;
-                    }
-                    else
-                    {
+                   
+                        location = "home"; 
+                }
+                else if(game.teams.home.name != "St. Louis Cardinals" && statusOfGame != "Scheduled")
+                {
+                  
                         oppScore = game.scores.total.home.runs;
                         cardsScore = game.scores.total.away.runs;
-                        opponent = game.teams.home.name;
+                  
+                    location = "away"; 
+             
+                   }
 
-                    }
+               // Still need to know the opponent even if its upcoming or in progress. 
+                if(location == "home")
+                {
+                    opponent = game.teams.away.name;
+                }
+                else
+                {
+                    opponent = game.teams.home.name;
+                }
 
+                    
+
+
+            
+                if (json.games.Count != 0 && (statusOfGame == "In Progress" || statusOfGame == "Final"))
+                {
+                    IsGameToday = true;
                     var TodaysGame = new TodaysGameVM
                     {
                         Status = game.status,
@@ -101,6 +127,37 @@ namespace BaseballGameTracker.Services
                     };
                     return compositeVM;
 
+                }
+                else if (statusOfGame == "Scheduled")
+                {
+
+                    IsGameToday = true; 
+                    // Upcoming game 
+                    var UpcomingGame = new TodaysGameVM
+                    {
+                        Status = "Upcoming Game",
+                        Cardinals = "St. Louis Cardinals",
+                        Opponent = opponent,
+                        CardinalsRuns = cardsScore,
+                        OpponentRuns = oppScore,
+                        TodaysDate = today,
+                        IsGameToday = IsGameToday
+                    };
+
+
+                    var recAsToday = new RecordVM
+                    {
+                        Wins = wins,
+                        Loses = loses
+                    };
+
+                    var compVM = new CompositeVM
+                    {
+                        TodaysGame = UpcomingGame,
+                        Record = recAsToday
+
+                    };
+                    return compVM;
                 }
                 else
                 {
