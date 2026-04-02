@@ -1,33 +1,39 @@
+using BaseballGameTracker.Application.Models;
+using BaseballGameTracker.Application.Models.Games;
+using BaseballGameTracker.Data;
 using BaseballGameTracker.Models;
 using BaseballGameTracker.Services;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Claims;
+using static System.Net.WebRequestMethods;
 
 
 namespace BaseballGameTracker.Controllers
 {
-    public class HomeController(IRecordService _recordService) : Controller
+    public class HomeController(IRecordService _recordService, IGameService _gameService) : Controller
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
 
-            Console.WriteLine("======= HELLLOOOOOOO ==========="); 
+           
 
             var wins = _recordService.CalulateWins();
-            var loses = _recordService.CalculateLoses(); 
+            var loses = _recordService.CalculateLoses();
 
-            var model = new RecordVM
-            {
-                Wins =  wins, 
-                Loses = loses
-            };
+            var getGameVM = await _gameService.GetTodaysGame(wins, loses);
   
 
-          
-       
-            return View(model);
+            var record = new RecordVM
+            {
+                Wins = wins,
+                Loses = loses
+            };
+
+            return View(getGameVM);
         }
 
         public IActionResult Privacy()

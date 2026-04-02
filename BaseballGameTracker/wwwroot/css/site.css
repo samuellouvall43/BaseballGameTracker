@@ -37,6 +37,17 @@ body {
     flex-direction: row;
     justify-content: center;
 }
+.todays-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.teams {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 
 .spacer{
     width: 30px; 

@@ -1,5 +1,5 @@
-﻿
-@model RecordVM
+﻿@using BaseballGameTracker.Application.Models
+@model CompositeVM
 @{
     ViewData["Title"] = "Home";
 }
@@ -10,25 +10,60 @@
     <p>Please follow the Add Email tab if you would like to get emails on the games.</p>
     <p>If you want to stop getting emails please follow the Delete Email tab.</p>
 
+    @if(Model.TodaysGame.IsGameToday){
+        <div class="todays-game">
+
+            <div>
+                <h1>@Model.TodaysGame.TodaysDate</h1>
+            </div>
+
+            <div>
+                <h1>@Model.TodaysGame.Status</h1>
+            </div>
+            <div class="teams">
+                <div>
+                    <h1>@Model.TodaysGame.Cardinals</h1>
+                    <h1>@Model.TodaysGame.CardinalsRuns</h1>
+                </div>
+                <div class="spacer">
+                </div>
+                <div>
+                    <h1>@Model.TodaysGame.Opponent</h1>
+                    <h1>@Model.TodaysGame.OpponentRuns</h1>
+                </div>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <h2>No game today :/</h2>
+    }
+
+    <br />
+    <br />
+
+
     <div class="wins-loses">
 
         <div class="wins">
             <h1>Wins</h1>
-            <h1> @Model.Wins</h1>
+            <h1> @Model.Record.Wins</h1>
         
         </div>
 
         <div class="spacer">
-
         </div>
 
         <div class="loses">
             <h1>Loses</h1>
-            <h1> @Model.Loses</h1>
+            <h1> @Model.Record.Loses</h1>
 
         </div>
 
 
     </div>
+
+   
 
 </div>
